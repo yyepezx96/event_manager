@@ -62,8 +62,18 @@ Below are the key issues I addressed during the assignment, each linked to its G
 
 ## 🐳 DockerHub Image
 
-📦 Docker Image: [DockerHub Link Here](#)  
-*(If not published, you can remove this section.)*
+The project has been containerized for easy deployment and testing!
+
+You can pull the latest image from DockerHub:
+
+**DockerHub Repository:**
+
+➡️ [yarlina/event_manager:latest](https://hub.docker.com/r/yarlina/event_manager)
+
+**To pull and run the image locally:**
+
+```bash
+docker pull yarlina/event_manager:latest
 
 ---
 
