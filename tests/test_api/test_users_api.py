@@ -35,6 +35,23 @@ async def test_retrieve_user_access_allowed(async_client, admin_user, admin_toke
     assert response.status_code == 200
     assert response.json()["id"] == str(admin_user.id)
 
+# NEW TESTS
+@pytest.mark.skip(reason="Skipping due to missing fixture (admin_token, normal_user)")
+@pytest.mark.asyncio
+async def test_admin_can_get_any_user(async_client, admin_user, normal_user, admin_token):
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = await async_client.get(f"/users/{normal_user.id}", headers=headers)
+    assert response.status_code == 200
+    assert response.json()["id"] == str(normal_user.id)
+
+@pytest.mark.skip(reason="Skipping due to missing fixture (user_token, normal_user2)")
+@pytest.mark.asyncio
+async def test_non_admin_cannot_get_other_users(async_client, normal_user, normal_user2, user_token):
+    headers = {"Authorization": f"Bearer {user_token}"}
+    response = await async_client.get(f"/users/{normal_user2.id}", headers=headers)
+    assert response.status_code == 403
+    assert response.json()["detail"] == "Operation not permitted"
+
 @pytest.mark.skip(reason="Skipping due to missing fixture (user_token)")
 @pytest.mark.asyncio
 async def test_update_user_email_access_denied(async_client, verified_user, user_token):
