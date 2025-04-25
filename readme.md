@@ -74,7 +74,8 @@ You can pull the latest image from DockerHub:
 
 ```bash
 docker pull yarlina/event_manager:latest
-
+docker run -d -p 8000:8000 yarlina/event_manager:latest
+```
 ---
 
 ## ✨ Reflection
