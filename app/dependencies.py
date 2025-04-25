@@ -30,7 +30,16 @@ async def get_db() -> AsyncSession:
             raise HTTPException(status_code=500, detail=str(e))
 
 # --- OAuth2 Scheme ---
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
+from fastapi.security import OAuth2
+
+class OAuth2PasswordBearerWithCookie(OAuth2):
+    def __init__(self, tokenUrl: str):
+        flows = OAuthFlowsModel(password={"tokenUrl": tokenUrl})
+        super().__init__(flows=flows)
+
+oauth2_scheme = OAuth2PasswordBearerWithCookie(tokenUrl="/login")
+
 
 # --- Current User Retrieval ---
 def get_current_user(token: str = Depends(oauth2_scheme)):
