@@ -53,7 +53,7 @@ Below are the key issues I addressed during the assignment, each linked to its G
    docker-compose exec fastapi pytest
    ```
 
-5. **(Optional) Check Test Coverage**
+5. **Check Test Coverage**
    ```bash
    docker-compose exec fastapi pytest --cov=app --cov-report=term-missing
    ```
