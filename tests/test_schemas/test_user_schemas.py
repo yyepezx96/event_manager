@@ -19,6 +19,34 @@ def test_user_create_valid(user_create_data):
     assert user.nickname == user_create_data["nickname"]
     assert user.password == user_create_data["password"]
 
+# ✅ Additional tests for password validation
+
+# Valid passwords
+@pytest.mark.parametrize("password", [
+    "StrongPass1!",
+    "A1b2c3d4$",
+    "P@ssword123",
+    "Complex*Password9"
+])
+def test_user_create_valid_passwords(user_base_data, password):
+    user_data = {**user_base_data, "password": password, "nickname": "validuser"}
+    user = UserCreate(**user_data)
+    assert user.password == password
+
+# Invalid passwords
+@pytest.mark.parametrize("password", [
+    "short1!",          # Too short
+    "nouppercase1!",    # Missing uppercase
+    "NOLOWERCASE1!",    # Missing lowercase
+    "NoNumber!",        # Missing number
+    "NoSpecial123",     # Missing special character
+])
+def test_user_create_invalid_passwords(user_base_data, password):
+    user_data = {**user_base_data, "password": password, "nickname": "invaliduser"}
+    with pytest.raises(ValidationError):
+        UserCreate(**user_data)
+
+
 # Tests for UserUpdate
 def test_user_update_valid(user_update_data):
     user_update_data["first_name"] = "John"
