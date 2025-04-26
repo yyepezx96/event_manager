@@ -55,6 +55,37 @@ def test_user_update_valid(user_update_data):
     assert user_update.email == user_update_data["email"]
     assert user_update.first_name == user_update_data["first_name"]
 
+# ✅ Additional tests for profile field edge cases
+
+def test_user_update_bio_only(user_update_data):
+    user_update_data.clear()
+    user_update_data["bio"] = "Updated bio only."
+    user = UserUpdate(**user_update_data)
+    assert user.bio == "Updated bio only."
+
+
+def test_user_update_profile_picture_only(user_update_data):
+    user_update_data.clear()
+    user_update_data["profile_picture_url"] = "https://example.com/pic.jpg"
+    user = UserUpdate(**user_update_data)
+    assert user.profile_picture_url == "https://example.com/pic.jpg"
+
+
+def test_user_update_multiple_fields(user_update_data):
+    user_update_data.clear()
+    user_update_data.update({
+        "bio": "Updated bio.",
+        "linkedin_profile_url": "https://linkedin.com/in/updateduser"
+    })
+    user = UserUpdate(**user_update_data)
+    assert user.bio == "Updated bio."
+    assert user.linkedin_profile_url == "https://linkedin.com/in/updateduser"
+
+
+def test_user_update_no_fields():
+    with pytest.raises(ValidationError):
+        UserUpdate()
+
 # Tests for UserResponse
 def test_user_response_valid(user_response_data):
     user_response_data["id"] = uuid.uuid4()
